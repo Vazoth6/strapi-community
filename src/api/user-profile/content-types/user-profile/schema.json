@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_profiles",
+  "info": {
+    "singularName": "user-profile",
+    "pluralName": "user-profiles",
+    "displayName": "User Profile",
+    "description": "Extended user profile information"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "bio": {
+      "type": "text"
+    },
+    "avatar": {
+      "type": "media",
+      "allowedTypes": ["images"],
+      "multiple": false
+    },
+    "timezone": {
+      "type": "string",
+      "default": "Europe/Lisbon"
+    },
+    "dailyGoalMinutes": {
+      "type": "integer",
+      "default": 240,
+      "min": 30,
+      "max": 720
+    },
+    "pomodoroWorkDuration": {
+      "type": "integer",
+      "default": 25,
+      "min": 5,
+      "max": 60
+    },
+    "pomodoroShortBreak": {
+      "type": "integer",
+      "default": 5,
+      "min": 1,
+      "max": 15
+    },
+    "pomodoroLongBreak": {
+      "type": "integer",
+      "default": 15,
+      "min": 10,
+      "max": 30
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "userProfile"
+    }
+  }
+}

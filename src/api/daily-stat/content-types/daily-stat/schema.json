@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "daily_stats",
+  "info": {
+    "singularName": "daily-stat",
+    "pluralName": "daily-stats",
+    "displayName": "Daily Stat",
+    "description": "Daily productivity statistics"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "tasksCompleted": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "tasksCreated": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "totalPomodoroSessions": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "totalWorkMinutes": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "totalBreakMinutes": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    }
+  }
+}

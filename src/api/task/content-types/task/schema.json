@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tasks",
+  "info": {
+    "singularName": "task",
+    "pluralName": "tasks",
+    "displayName": "Task",
+    "description": "User tasks for productivity tracking"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": true
+    },
+    "content-type-builder": {
+      "visible": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 255,
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "dueDate": {
+      "type": "datetime"
+    },
+    "priority": {
+      "type": "enumeration",
+      "default": "MEDIUM",
+      "enum": ["HIGH", "MEDIUM", "LOW"]
+    },
+    "completed": {
+      "type": "boolean"
+    },
+    "completedAt": {
+      "type": "datetime"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

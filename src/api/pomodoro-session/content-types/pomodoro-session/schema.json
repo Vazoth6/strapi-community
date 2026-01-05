@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pomodoro_sessions",
+  "info": {
+    "singularName": "pomodoro-session",
+    "pluralName": "pomodoro-sessions",
+    "displayName": "Pomodoro Session",
+    "description": "Pomodoro timer sessions with user association"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sessionType": {
+      "type": "enumeration",
+      "default": "WORK",
+      "enum": ["WORK", "SHORT_BREAK", "LONG_BREAK"]
+    },
+    "startTime": {
+      "type": "datetime",
+      "required": true
+    },
+    "endTime": {
+      "type": "datetime"
+    },
+    "durationMinutes": {
+      "type": "integer",
+      "default": 25,
+      "min": 1,
+      "max": 60
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "task": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::task.task"
+    }
+  }
+}
