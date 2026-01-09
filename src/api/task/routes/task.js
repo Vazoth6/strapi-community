@@ -39,6 +39,15 @@ module.exports = {
       },
     },
     {
+      method: 'PUT',
+      path: '/task/:id/complete',
+      handler: 'task.complete',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
       method: 'DELETE',
       path: '/task/:id',
       handler: 'task.delete',
