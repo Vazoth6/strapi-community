@@ -536,6 +536,80 @@ export interface ApiDailyStatDailyStat extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFocusLocationFocusLocation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'focus_locations';
+  info: {
+    description: 'Localiza\u00E7\u00F5es onde o utilizador quer focar no trabalho';
+    displayName: 'Focus Location';
+    pluralName: 'focus-locations';
+    singularName: 'focus-location';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    address: Schema.Attribute.Text & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enabled: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    latitude: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 90;
+          min: -90;
+        },
+        number
+      >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::focus-location.focus-location'
+    > &
+      Schema.Attribute.Private;
+    longitude: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 180;
+          min: -180;
+        },
+        number
+      >;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+        minLength: 1;
+      }>;
+    notificationMessage: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Vamos p\u00F4r as m\u00E3os ao trabalho!'>;
+    publishedAt: Schema.Attribute.DateTime;
+    radius: Schema.Attribute.Float &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 1000;
+          min: 10;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<100>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiPomodoroSessionPomodoroSession
   extends Struct.CollectionTypeSchema {
   collectionName: 'pomodoro_sessions';
@@ -1231,6 +1305,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::daily-stat.daily-stat': ApiDailyStatDailyStat;
+      'api::focus-location.focus-location': ApiFocusLocationFocusLocation;
       'api::pomodoro-session.pomodoro-session': ApiPomodoroSessionPomodoroSession;
       'api::task.task': ApiTaskTask;
       'api::user-profile.user-profile': ApiUserProfileUserProfile;

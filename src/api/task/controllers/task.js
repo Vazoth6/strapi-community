@@ -95,55 +95,85 @@ module.exports = {
 
   async create(ctx) {
     try {
-      console.log('📡 POST /api/task chamado');
-      
-      const user = ctx.state.user;
-      
-      if (!user) {
-        return ctx.unauthorized('You must be logged in to create tasks.');
-      }
-      
-      const { data } = ctx.request.body;
-      
-      if (!data || !data.attributes) {
-        return ctx.badRequest('Missing data.attributes');
-      }
-      
-      // Associar a tarefa ao usuário atual
-      const taskData = {
-        ...data.attributes,
-        user: user.id
-      };
-      
-      console.log(`✅ Criando tarefa para o usuário ${user.id}`);
-      
-      const task = await strapi.entityService.create('api::task.task', {
-        data: taskData
-      });
-      
-      console.log(`✅ Tarefa criada: ${task.id} - ${task.title} para o usuário ${user.id}`);
-      
-      return {
-        data: {
-          id: task.id,
-          attributes: {
-            title: task.title,
-            description: task.description,
-            dueDate: task.dueDate,
-            priority: task.priority,
-            completed: task.completed,
-            completedAt: task.completedAt,
-            createdAt: task.createdAt,
-            updatedAt: task.updatedAt,
-            estimatedMinutes: task.estimatedMinutes || null // Incluir o novo campo
-          }
+        console.log('📡 POST /api/task chamado');
+        console.log('👤 Usuário:', ctx.state.user);
+        console.log('📦 Request body:', JSON.stringify(ctx.request.body, null, 2));
+        
+        const user = ctx.state.user;
+        
+        if (!user) {
+            console.log('❌ Usuário não autenticado');
+            return ctx.unauthorized('You must be logged in to create tasks.');
         }
-      };
+        
+        const { data } = ctx.request.body;
+        
+        if (!data || !data.attributes) {
+            console.log('❌ Dados faltando:', { data: data });
+            return ctx.badRequest('Missing data.attributes');
+        }
+        
+        console.log('📋 Atributos recebidos:', data.attributes);
+        
+        // Log específico para cada campo
+        console.log('🔍 Campos da tarefa:');
+        console.log('- title:', data.attributes.title);
+        console.log('- priority:', data.attributes.priority);
+        console.log('- dueDate:', data.attributes.dueDate);
+        console.log('- description:', data.attributes.description);
+        console.log('- completed:', data.attributes.completed);
+        console.log('- estimatedMinutes:', data.attributes.estimatedMinutes);
+        
+        // Verificar se o campo priority tem um valor válido
+        const validPriorities = ['LOW', 'MEDIUM', 'HIGH'];
+        if (!validPriorities.includes(data.attributes.priority?.toUpperCase())) {
+            console.log('❌ Prioridade inválida:', data.attributes.priority);
+            return ctx.badRequest('Priority must be one of: LOW, MEDIUM, HIGH');
+        }
+        
+        // Associar a tarefa ao usuário atual
+        const taskData = {
+            ...data.attributes,
+            user: user.id,
+            priority: data.attributes.priority.toUpperCase() // Garantir maiúsculas
+        };
+        
+        console.log(`✅ Criando tarefa para o usuário ${user.id}`);
+        console.log('📝 Dados completos:', JSON.stringify(taskData, null, 2));
+        
+        // Tentar criar a tarefa
+        const task = await strapi.entityService.create('api::task.task', {
+            data: taskData
+        });
+        
+        console.log(`✅ Tarefa criada: ${task.id} - ${task.title} para o usuário ${user.id}`);
+        
+        return {
+            data: {
+                id: task.id,
+                attributes: {
+                    title: task.title,
+                    description: task.description,
+                    dueDate: task.dueDate,
+                    priority: task.priority,
+                    completed: task.completed,
+                    completedAt: task.completedAt,
+                    createdAt: task.createdAt,
+                    updatedAt: task.updatedAt,
+                    estimatedMinutes: task.estimatedMinutes || null
+                }
+            }
+        };
     } catch (error) {
-      console.error('❌ Erro em create:', error);
-      return ctx.internalServerError('Error creating task');
+        console.error('❌ ERRO DETALHADO em create:');
+        console.error('Mensagem:', error.message);
+        console.error('Stack:', error.stack);
+        console.error('Campo com erro:', error.details?.errors);
+        
+        return ctx.internalServerError(`Error creating task: ${error.message}`);
     }
-  },
+},
+
 
   async update(ctx) {
     try {

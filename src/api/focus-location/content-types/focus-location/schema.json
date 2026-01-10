@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "focus_locations",
+  "info": {
+    "singularName": "focus-location",
+    "pluralName": "focus-locations",
+    "displayName": "Focus Location",
+    "description": "Localizações onde o utilizador quer focar no trabalho"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "address": {
+      "type": "text",
+      "required": true
+    },
+    "latitude": {
+      "type": "decimal",
+      "required": true,
+      "min": -90,
+      "max": 90
+    },
+    "longitude": {
+      "type": "decimal",
+      "required": true,
+      "min": -180,
+      "max": 180
+    },
+    "radius": {
+      "type": "float",
+      "required": true,
+      "default": 100,
+      "min": 10,
+      "max": 1000
+    },
+    "enabled": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "notificationMessage": {
+      "type": "text",
+      "required": true,
+      "default": "Vamos pôr as mãos ao trabalho!"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
