@@ -1,26 +1,29 @@
-// config/plugins.js
 module.exports = ({ env }) => ({
-  // ... other plugins
+  // Plugin de Users & Permissions (gestão de utilizadores e autenticação)
   'users-permissions': {
     config: {
+      // Segredo para assinatura de tokens JWT (deve estar no .env)
       jwtSecret: env('JWT_SECRET'),
+      // Configuração dos tokens JWT
       jwt: {
-        expiresIn: '7d',
+        expiresIn: '7d', // Tokens expiram após 7 dias
       },
+      // Configuração do registo de novos utilizadores
       register: {
-        allowedFields: ['username', 'email'],
+        allowedFields: ['username', 'email'], // Campos permitidos no registo
       },
-      // Disable email for now to test
+      // Configuração de email (usando sendmail como fallback)
       email: {
         config: {
-          provider: 'sendmail', // or 'nodemailer'
+          provider: 'sendmail', // Usar sendmail para desenvolvimento
           providerOptions: {},
           settings: {
-            defaultFrom: 'no-reply@localhost',
-            defaultReplyTo: 'no-reply@localhost',
+            defaultFrom: 'no-reply@localhost', // Remetente padrão
+            defaultReplyTo: 'no-reply@localhost', // Endereço para resposta
           },
         },
       },
+      // Configuração de confirmação por email desativada
       emailConfirmation: {
         enabled: false,
       },

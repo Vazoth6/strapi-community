@@ -33,7 +33,6 @@ module.exports = createCoreController('api::focus-location.focus-location', ({ s
 
       console.log('Location data extracted:', JSON.stringify(locationData, null, 2));
 
-      // **CRÍTICO: Converter os tipos corretamente para o Strapi**
       const createData = {
         name: String(locationData.name || ''),
         address: String(locationData.address || ''),
@@ -71,15 +70,15 @@ module.exports = createCoreController('api::focus-location.focus-location', ({ s
         populate: ['user']
       });
 
-      console.log('✅ Entry created successfully:', entry.id);
+      console.log(' Entry created successfully:', entry.id);
       return this.transformResponse(entry);
       
     } catch (error) {
-      console.error('❌ Erro completo ao criar focus location:', error);
+      console.error(' Erro completo ao criar focus location:', error);
       
       // Log detalhado dos erros de validação
       if (error.details?.errors) {
-        console.error('📋 Validation errors details:');
+        console.error(' Validation errors details:');
         error.details.errors.forEach((err, index) => {
           console.error(`  Error ${index + 1}:`);
           console.error(`    Path: ${err.path}`);
